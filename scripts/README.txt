@@ -1,0 +1,1 @@
+Esta pasta contém os scripts em R (.R) usados no projeto. 
