@@ -108,6 +108,58 @@ if (is.character(z)){
   print ("valor numerico")
 }
 
+# 5
+numero <- 10
+if(numero %% 2 == 0){
+  print("Par")
+}else{
+  print("Ímpar")
+}
+
+# 6
+a <- 1
+b <- -2
+c <- 3
+delta <- b*b-4*a*c
+
+if(delta==0){
+  x <- -b/2/a
+  print(x)
+}else if(delta >0){
+  x1 <- (-b+sqrt(delta))/2/a
+  x2 <- (-b-sqrt(delta))/2/a
+  print(x1)
+  print(x2)
+}else{
+  print("Raízes imaginárias")
+}
+
+# 7
+a <- 4
+b <- 4
+c <- 4
+if(a < b+c & b < a+c & c < a+b){
+  if(a == b & b==c){
+    print("Triângulo Equilátero")
+  }else if(a==b | a==c | b==c ){
+    print("Triângulo Isósceles")
+  }else{
+    print("Triângulo Escaleno")
+  }
+
+}else{
+  print("Não forma triângulo")
+}
+
+# 8
+ano <- 2022
+
+if(ano %% 400 ==0 | (ano %%4 ==0 & ano%%100 != 0) ){
+  print("Bissexto")
+}else{
+  print("Não bissexto")
+}
+
 #9) Faça um script para imprimir uma frase n vezes na tela do computador,
 # n deve ser um número fornecido
 # pelo usuário, maior que zero. Utilize as estruturas while, repeate e
@@ -150,15 +202,51 @@ for (i in 1:10){
 }
 
 
+# 10
+for(i in 1:20){
+  print(i)
+}
+
+# 11
+for(i in seq(0,25,2)){
+  print(i)
+}
+
+for(i in seq(10,-10,-1)){
+  print(i)
+}
+
+# 12
+soma <- 0
+for(i in 1:10){
+  soma <- soma - i/i/i*(-1)^i
+}
+soma
+
+# 13
+num <- 175781
+cont <- 0
+for(i in 1:num){
+  if(num%%i == 0) cont <- cont +1
+}
+if(cont == 2){
+  print("Primo")
+}else{
+  print("Não primo")
+}
 
 
-adivinha_numero(12) # maior
-adivinha_numero(138)  # maior
-adivinha_numero(1000) # menor
-adivinha_numero(936) # menor
-adivinha_numero(500)  # maior
-adivinha_numero(750) # menor
-adivinha_numero(650) # maior
-adivinha_numero(700) # maior
-adivinha_numero(735) # maior
-adivinha_numero(747) # ACERTOU
+
+# Desafio
+advinha_numero <- function(){
+  n <- 747
+  repeat{
+    x <- readline(prompt = "Digite um número: ")
+    if(x==n) break
+    if(x<n) print("Maior")
+    if(x>n) print("Menor")
+
+  }
+  print("Acertou")
+}
+advinha_numero()
