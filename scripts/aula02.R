@@ -1,4 +1,4 @@
-# Aula 02 de R4ds - 19/08/2025
+# Aula 02 de R4DS - 19/08/2025
 
 # Tipos Primários ---------------------------------------------------------
 # Strings ou caractes - só colocar tudo dentro das aspas que vira uma string

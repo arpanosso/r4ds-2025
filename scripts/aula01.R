@@ -1,4 +1,4 @@
-# Aula 01 de R4ds - 12/08/2025
+# Aula 01 de R4DS - 12/08/2025
 # Operações aritméticas
 2+2
 2*2
