@@ -1,1 +1,1 @@
-Esta pasta contém os dados originais (brutos), tal como foram obtidos de suas fontes.
+Michael O'Sullivan, Pierre Friedlingstein, Stephen Sitch et al. An improved approach to estimate the natural land carbon sink, 28 July 2025, PREPRINT (Version 1) available at Research Square [https://doi.org/10.21203/rs.3.rs-7207206/v1]

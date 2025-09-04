@@ -150,12 +150,30 @@ dados[filtro,]
 
 ##LISTA DE EXERCÍCIOS ... 4
 
+# Lista 04 de Exercícios --------------------------------------------------
 
-
-
-
-
-
+x <- c(11,13,20,10,10,13,16,17,16,12) # 1
+sum(x) # 2
+min(x) # 3
+max(x) # 3
+max(x) - min(x) # diff(range(x)) # 4
+sum(x^2) # 5
+sum(x)^2 # 6
+mean(x) # 7
+x - mean(x)# 8
+sum(x - mean(x)) # 9
+sum((x - mean(x))^2) # 10
+sum(x^2) - sum(x)^2/length(x) # 10
+sum((x - mean(x))^2)/(length(x)-1) # 11
+var(x) # 11
+sd(x) # 12
+sd(x) / sqrt(length(x))# 13
+100*sd(x) / mean(x)# 14
+A <- matrix(c(1,4,-4,2,5,-5,3,6,0),ncol=3)# 15
+apply(A, 1, sum) # 16
+apply(A, 2, sum) # 17
+apply(A, 1, mean) # 18
+apply(A, 2, mean)# 19
 
 
 
