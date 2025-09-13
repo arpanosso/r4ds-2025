@@ -38,23 +38,7 @@ ESsa função é utilizada para filtrar LINHAS
 data_set |> 
   filter(
     data >= "2019-01-01"
-  ) |> 
-  group_by(data) |> 
-  summarise(
-    media_fco2 = mean(fco2, na.rm=TRUE)
-  ) |> 
-  ggplot(aes(x=data, y=media_fco2)) + 
-  geom_col(color= "black", fill="red")+
-  geom_line()+
-  theme_bw()
+  ) 
 ```
-```{r}
-library(corrplot)
-data_set |> 
-  select(fco2:ctc) |> 
-  cor() |> 
-  corrplot::corrplot()
-```
-
 
 
