@@ -1,0 +1,60 @@
+---
+title: "aula05"
+author: "Witoria Araujo"
+date: "2025-09-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      error = FALSE,
+                      message = FALSE)
+```
+
+## Carregando pacotes
+
+Precisamos colocar um chunk (pedaço de código) que é o atalho **Ctrl + Alt + I** 
+
+```{r}
+library(tidyverse)
+```
+
+## Lendo o banco de dados
+
+agora vamos carregar o banco de dados que está na pasta **data**.
+```{r}
+data_set <- read_rds("../data/emissao-co2-solo.rds")
+glimpse(data_set)
+```
+
+## Testando os verbos do Tidyverse
+
+### filter 
+
+ESsa função é utilizada para filtrar LINHAS
+
+```{r}
+data_set |> 
+  filter(
+    data >= "2019-01-01"
+  ) |> 
+  group_by(data) |> 
+  summarise(
+    media_fco2 = mean(fco2, na.rm=TRUE)
+  ) |> 
+  ggplot(aes(x=data, y=media_fco2)) + 
+  geom_col(color= "black", fill="red")+
+  geom_line()+
+  theme_bw()
+```
+```{r}
+library(corrplot)
+data_set |> 
+  select(fco2:ctc) |> 
+  cor() |> 
+  corrplot::corrplot()
+```
+
+
+
