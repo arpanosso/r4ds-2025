@@ -1,6 +1,6 @@
 ---
 title: "aula05"
-author: "Witoria Araujo"
+author: "Alan Rodrigo Panosso"
 date: "2025-09-09"
 output: html_document
 ---
@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE,
 
 ## Carregando pacotes
 
-Precisamos colocar um chunk (pedaço de código) que é o atalho **Ctrl + Alt + I** 
+Precisamos colocar um chunk (pedaço de código) que é o atalho **Ctrl + Alt + I**
 
 ```{r}
 library(tidyverse)
@@ -23,14 +23,15 @@ library(tidyverse)
 ## Lendo o banco de dados
 
 agora vamos carregar o banco de dados que está na pasta **data**.
+
 ```{r}
 data_set <- read_rds("../data/emissao-co2-solo.rds")
 glimpse(data_set)
 ```
 
-## Testando os verbos do Tidyverse
+## Testando os verbos do Tidyverse 
 
-### filter 
+### filter
 
 ESsa função é utilizada para filtrar LINHAS
 
@@ -43,5 +44,6 @@ data_set |>
 
 ## Lista de exercício 5
 
-
-
+```{r}
+View(data_set)
+```
