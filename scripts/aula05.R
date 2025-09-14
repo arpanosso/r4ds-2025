@@ -65,7 +65,8 @@ readxl::read_xlsx("data-raw/imdb.xlsx")
 library(tidyverse)
 library(readxl)
 dados<- read_xlsx("data-raw/emissao-co2-solo.xlsx") |>
-  janitor::clean_names()
+  janitor::clean_names() |>
+  filter(us >= 10)
 glimpse(dados)
 write_rds(dados,"data/emissao-co2-solo.rds")
 

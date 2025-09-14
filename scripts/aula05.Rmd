@@ -44,6 +44,4 @@ data_set |>
 
 ## Lista de exercício 5
 
-```{r}
-View(data_set)
-```
+
