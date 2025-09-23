@@ -1,7 +1,7 @@
 ---
 title: "aula05"
 author: "Alan Rodrigo Panosso"
-date: "2025-09-09"
+date: "2025-09-16"
 output: html_document
 ---
 
@@ -44,4 +44,200 @@ data_set |>
 
 ## Lista de exercício 5
 
+### 2)
 
+```{r}
+data_set |> 
+  filter(
+    experimento == "Temporal"
+    )
+
+# quantas categorias existem dentro da coluna experimento
+data_set |> 
+  distinct(experimento)
+
+```
+
+### 3)
+
+```{r}
+data_set |> 
+  select(
+    data, tratamento, id, fco2, ts, us
+    )
+```
+
+### 4)
+```{r}
+data_set |> 
+  select(data, tratamento, id, fco2, ts, us) |> #selecionar colunas
+  mutate( #alterar o bano de dados 
+    dia = day(data),
+    mes = month(data),
+    ano = year(data),
+   # ts = round(ts, 2) # arredondando casas decimais
+  ) |> 
+  relocate(data, dia, mes, ano) |> # 5) reorganizar colunas 
+  rename(trat = tratamento) #renomear colunas
+
+```
+
+### 6)
+```{r}
+data_set |> 
+  select(data, tratamento, id, fco2, ts, us) |> #selecionar colunas
+  mutate( #alterar o bano de dados 
+    dia = day(data),
+    mes = month(data),
+    ano = year(data),
+   # ts = round(ts, 2) # arredondando casas decimais
+  ) |> 
+  pull(ano) |> 
+  unique()
+```
+
+### 7)
+```{r}
+data_set_2017 <- data_set |> 
+  select(data, tratamento, id, fco2, ts, us) |> #selecionar colunas
+  mutate( #alterar o bano de dados 
+    dia = day(data),
+    mes = month(data),
+    ano = year(data),
+   # ts = round(ts, 2) # arredondando casas decimais
+  ) |> 
+  relocate(data, dia, mes, ano) |> # 5) reorganizar colunas 
+  rename(trat = tratamento) |>
+filter(ano == 2017)
+data_set_2017
+```
+
+### 8)
+```{r}
+data_set_2017 |> 
+  distinct(trat)
+```
+
+
+```{r}
+data_set_2017 |> 
+  pull(trat) |> 
+  unique() |> 
+  length() # contando categorias
+```
+
+```{r}
+data_set_2017 |> 
+  count(trat)
+```
+
+### 9)
+```{r}
+data_set_2017 |> 
+  arrange(desc(fco2))
+```
+
+### 10)
+```{r}
+data_set_2017 |> 
+  head(4) #mostra as (n=4) primeiras linhas da tabela
+```
+
+```{r}
+data_set_2017 |> 
+  tail(4) #mostra as (n=4) últimas linhas da tabela
+```
+
+### 11)
+```{r}
+data_set_2017 |> 
+  mutate(
+    classe_emissao = case_when(
+      fco2 <= 2.92 ~ "Baixa",
+      fco2 >= 2.93 & fco2 <= 5.41 ~ "Média",
+      fco2 >= 5.42 & fco2 <= 7.90 ~ "Alta",
+      fco2 > 7.90 ~ "Muito Alta"
+    )
+    
+  ) |> ### 12)
+  count(classe_emissao)
+```
+
+### 13)
+```{r}
+data_set_2017 |> 
+  group_by(trat) |> 
+  summarise(
+    fco2_m = mean(fco2, na.rm=TRUE)
+  )
+```
+
+### 14) 
+```{r}
+data_set_2017 |> 
+  group_by(data, trat) |> 
+  summarise(
+    fco2_mim = min(fco2, na.rm = TRUE),
+    fco2_max = max(fco2, na.rm = TRUE)
+  )
+```
+
+### 15)
+
+```{r}
+data_set_2017 |> 
+  group_by(data, trat) |> 
+  summarise(
+    ts_media = mean(ts, na.rm=TRUE),
+    us_media = mean(us, na.rm=TRUE)
+  )
+```
+
+### 16) Criar uma função para calcular a estatística descritiva de um vetor numérico
+```{r}
+estatistica_descritiva <- function(x){
+  x = na.omit(x) # tratando os nas
+  n = length(x)
+  media = mean(x)
+  menor = min(x)
+  q1 = quantile(x,.25)
+  mediana = median(x)
+  q3 = quantile(x,.75)
+  maior = max(x)
+  vari = var(x)
+  dp = sd (x)
+  epm = dp/sqrt(n) #erro padrão da média
+  cv = 100*dp/media # coeficiente de variação
+  g2 = agricolae::skewness(x) #assimetria
+  g3 = agricolae::kurtosis(x) #curtose
+  return(
+    c(n, media, menor, q1, mediana, q3, maior, vari, dp, epm, cv, g2, g3)
+  )
+}
+y<- 1:100
+estatistica_descritiva(y)
+```
+
+### 17) 
+```{r}
+# Aplicando para FCO2
+data_set |> 
+  summarise(
+    fco2_est = estatistica_descritiva(fco2),
+  )
+
+# Aplicando para fco2 até hlifs (última variável)
+data_set |> 
+  summarise(
+    across(
+      .cols = fco2:hlifs,
+      .fns = estatistica_descritiva,
+      .names = "{.col}_ed"
+    )
+  ) |> 
+  add_column(estatistica = c("n","Media","Min","Q1","Mediana",
+                             "Q3","Max","Vari","DP", "EPM","CV",
+                             "G2", "G3")) |> 
+  relocate(estatistica) |> 
+  writexl::write_xlsx("../output/estatistica-descritiva.xlsx")
+```
