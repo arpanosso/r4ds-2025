@@ -1,0 +1,33 @@
+---
+title: "aula06"
+author: "Alan Rodrigo Panosso"
+date: "2025-09-23"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      error = FALSE,
+                      message = FALSE)
+```
+
+## Carregando pacotes
+
+Precisamos colocar um chunk (pedaço de código) que é o atalho **Ctrl + Alt + I**
+
+```{r}
+library(tidyverse)
+```
+
+## Lendo o banco de dados
+
+agora vamos carregar o banco de dados que está na pasta **data**.
+
+```{r}
+data_set <- read_rds("../data/emissao-co2-solo.rds") |> 
+  filter(
+    data>="2017-01-01" & data <="2017-12-31"
+  )
+glimpse(data_set)
+```
