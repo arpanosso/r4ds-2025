@@ -24,6 +24,8 @@ library(tidyverse)
 
 agora vamos carregar o banco de dados que está na pasta **data**.
 
+## 1)
+
 ```{r}
 data_set <- read_rds("../data/emissao-co2-solo.rds") |> 
   filter(
@@ -31,3 +33,201 @@ data_set <- read_rds("../data/emissao-co2-solo.rds") |>
   )
 glimpse(data_set)
 ```
+
+## 2 e 3)
+
+```{r}
+data_set |> 
+  ggplot(aes(x=ts, y=us, color = tratamento)) +
+  geom_point()
+```
+
+## 4)
+
+```{r}
+data_set |> 
+  ggplot(aes(ts,us, colour = tratamento, shape = tratamento)) + 
+  geom_point(size=2) +
+  facet_wrap(~tratamento) +
+  theme_bw() + # tema para tirar destaque
+  xlim(-5,30) + # define escala em x
+  ylim (15,40) + # define escala em y
+  labs(
+    x = "Temperatura do solo (ºC)",
+    y = "Umidade do Solo (%)",
+    color = "Área",
+    shape = ""
+  ) + 
+  theme(
+  legend.position = "top"
+  )+
+  scale_color_manual(values = c("darkblue", "orange3")) +
+  scale_shape_manual(values = c(1,16))
+```
+
+## 5)
+```{r}
+data_set |> 
+  ggplot(aes(ts,us)) +
+  geom_point() +
+  geom_smooth(
+    method = "lm",
+    se=FALSE
+  ) +
+  theme_bw()
+```
+
+## 6)
+```{r}
+data_set |> 
+ ggplot(aes(ts,us)) +
+ geom_point() +
+ geom_smooth(
+ method = "lm",
+ formula = y ~ poly(x, 2), # Adiciona a fórmula polinomial de ordem 2
+ se=FALSE
+ ) +
+ theme_bw()
+```
+## 7)
+
+```{r}
+library(ggpubr)
+data_set |> 
+  ggplot(aes(ts,us)) +
+  geom_point() +
+  geom_smooth(
+    method = "lm",
+    formula = y ~ poly(x,2),
+    se= FALSE,
+    color= "salmon"
+  ) +
+  stat_regline_equation(
+    aes(label = paste(..eq.label..,
+        ..rr.label.., sep = "~~")),
+    formula = y ~ poly(x,2),
+    label.x = 10,
+    label.y = 20,
+  ) + 
+  theme_bw()
+```
+
+## 8 e 9)
+```{r}
+data_set |> 
+  group_by(tratamento, data) |> 
+  summarise(
+    fco2_mean = mean(fco2, na.rm=TRUE)
+  ) |> 
+  ggplot(aes(data,fco2_mean, fill = tratamento)) +
+  geom_col(position = "dodge") +
+  theme_bw() +
+  scale_fill_viridis_d()
+```
+
+```{r}
+data_set |> 
+  group_by(tratamento, data) |> 
+  summarise(
+    fco2_mean = mean(fco2, na.rm=TRUE)
+  ) |> 
+  ggplot(aes(data,fco2_mean, fill = tratamento)) +
+  geom_col(color = "black")
+```
+
+## 10)
+
+```{r}
+media <- mean(data_set$fco2, na.rm = TRUE)
+data_set |> 
+  ggplot(aes(x=fco2)) +
+  geom_histogram(
+    color = "black",
+    fill = "lightgray",
+    bins = 25
+  ) +
+  theme_bw() +
+  geom_vline(xintercept = media, color= "red")
+```
+
+```{r}
+media <- mean(data_set$fco2, na.rm = TRUE)
+data_set |> 
+  ggplot(aes(x=fco2, y=..density..)) +
+  geom_histogram(
+    color = "black",
+    fill = "orange3",
+    bins = 25
+  ) +
+  theme_bw() +
+  geom_vline(xintercept = media, color= "blue") +
+  labs(
+    x=expression(paste(
+    "Emissão de ", CO[2],
+    " do solo (", mu,mol," ",m^2, s^-1,")"
+    ))
+  )
+```
+
+## 11)
+```{r}
+data_set |> 
+  ggplot(aes(y=fco2))+
+  geom_boxplot(fill="orange3") +
+  theme_bw()
+```
+
+```{r}
+data_set |> 
+  ggplot(aes(x=fco2, y=as.factor(data), fill = tratamento)) +
+  geom_boxplot() +
+  theme_bw() +
+  scale_fill_viridis_d()+
+  labs(y="Data",
+       x= "Emissão de co...",
+       fill = "Trat")
+```
+
+## 12)
+```{r}
+data_set |> 
+  group_by(tratamento, data) |> 
+  summarise(
+    fco2_mean = mean(fco2, na.rm=TRUE)
+  ) |> 
+  ggplot(aes(data,fco2_mean, color = tratamento))+
+  geom_point()+
+  geom_line()+
+  theme_bw()+
+  scale_color_manual(values = c("darkblue", "orange3"))+
+  labs(
+    color= "Tratamento",
+    x="Data",
+    y=expression(paste(
+    "Emissão de ", CO[2],
+    " do solo (", mu,mol," ",m^2, s^-1,")"
+    ))
+  )+
+  theme(
+    legend.position = "top"
+  )
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
