@@ -1,0 +1,36 @@
+---
+title: "aula07"
+author: "Alan Rodrigo Panosso"
+date: "2025-09-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      error = FALSE,
+                      message = FALSE)
+```
+
+# Trabalho Prático
+
+## Carregando pacotes e funções
+
+
+```{r}
+library(tidyverse)
+source("../R/my-functions.R")
+```
+
+## Lendo o banco de dados
+
+Observe que são carregadas apenas as colunas data, tratamento e fco2.
+
+```{r}
+data_set <- read_rds("../data/emissao-co2-solo.rds") |> 
+  filter(
+    data>="2017-01-01" & data <="2017-12-31"
+  ) |> select(data, tratamento, fco2)
+glimpse(data_set)
+```
+
