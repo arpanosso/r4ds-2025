@@ -27,10 +27,41 @@ source("../R/my-functions.R")
 Observe que são carregadas apenas as colunas data, tratamento e fco2.
 
 ```{r}
-data_set <- read_rds("../data/emissao-co2-solo.rds") |> 
+data_set_2017 <- read_rds("../data/emissao-co2-solo.rds") |> 
   filter(
     data>="2017-01-01" & data <="2017-12-31"
   ) |> select(data, tratamento, fco2)
-glimpse(data_set)
+glimpse(data_set_2017)
+```
+
+```{r}
+data_set_2017 |> 
+  group_by(data, tratamento ) |> 
+  summarise(
+    fco2_mean = mean(fco2, na.rm=TRUE),
+    .groups = "drop"
+  ) |> 
+  arrange(tratamento , data) |> 
+  mutate(
+    dif_data = with_previus(as.numeric(data),tratamento ),
+    sum_fco2 = abs(with_previus(fco2_mean,tratamento )),
+    area = dif_data*sum_fco2/2*12*1e-6*10/1000
+    ) |> 
+  group_by(tratamento) |>
+  mutate(
+    area_acum = cumsum(area)
+  ) |>
+  ggplot(aes(x=data,y=area_acum, fill = tratamento)) +
+  geom_area(color="black") + 
+  theme_bw() +
+  scale_fill_manual(values = c("darkblue","orange3")) +
+  theme(
+    legend.position = "bottom"
+  ) +
+  labs(
+    fill = "",
+    y = expression(paste("Emissão Total (kg C ",ha^{-1},")")),
+    x = "Data-2017"
+  )
 ```
 

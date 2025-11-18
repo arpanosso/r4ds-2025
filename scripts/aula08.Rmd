@@ -1,0 +1,114 @@
+---
+title: "aula08"
+author: "Alan Rodrigo Panosso"
+date: "2025-10-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      error = FALSE,
+                      message = FALSE)
+```
+
+# Multivariada
+## Carregando os pacotes
+
+```{r}
+library(factoextra)
+library(tidyverse)
+library(corrplot)
+library(vegan)
+```
+
+## Lendo o banco de dados
+
+
+```{r}
+dados <- read_rds("../data/emissao-co2-solo.rds")
+glimpse(dados)
+```
+
+## Selecionando os dados do ano de 2008
+
+```{r}
+dados_2008 <- dados |>
+  filter(data>= '2008-01-04' & data <= '2008-12-31')
+glimpse(dados_2008)
+```
+
+## Vamos calcular a matriz de correlação linear de pearson entre as variáveis
+
+```{r}
+df_aux <- dados_2008 |>
+  select(fco2:hlifs)
+# Construir a matriz de correlação
+
+mcorr<-cor(df_aux)
+corrplot(mcorr,
+         method = "square",
+         type = "upper",
+         diag = FALSE,)
+```
+
+## Análise de agrupamento hierárquico
+
+# Exemplo de padronização
+
+```{r}
+x <- c(19, 16, 13, 11)
+mean(x)
+sd(x)
+
+z <- (x-mean(x))/sd(x)
+z
+round(mean(z))
+sd(z)
+```
+
+## Padronizar as nossas variáveis
+## para a escala z score
+
+```{r}
+df_pad <- vegan::decostand(
+  df_aux |>
+    select(-c(ts, at, micro, p, sb,v, mg)), method = "standardize"
+)
+df_pad
+```
+
+
+```{r}
+# Realizar a análise de agrupamento
+# calcular a distancia euclidiana entre as observações
+df_pad_euc <- vegan::vegdist(
+  df_pad, method = "euclidean"
+)
+
+# agrupamento das observações
+df_pad_euc_ward <- hclust(
+  df_pad_euc,
+  method ="ward.D"
+)
+plot(df_pad_euc_ward)
+# Definindo os grupos por meio do corte do dendrograma
+grupo <- cutree(df_pad_euc_ward,
+                2)
+```
+
+
+```{r}
+# Análise de componentes principais
+pca <- prcomp(df_pad)
+#Autovalores
+pca$sdev^2/sum(pca$sdev^2)*100
+# Screeplot
+fviz_eig(pca)
+
+## Plot dos feixes de importancia
+fviz_pca_ind(pca)
+fviz_pca_var(pca)
+```
+
+
