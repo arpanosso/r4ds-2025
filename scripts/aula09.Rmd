@@ -1,0 +1,183 @@
+---
+title: "aula09-probabilidade"
+author: "Witoria Araujo"
+date: "2025-11-18"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Distribições de Probabilidade
+
+## FUNÇÕES DE DISTRIBUIÇÃO NO R
+ r -> Gerador de numeros 
+ p -> Probabilidade acumulada
+ d -> densidade (Probabilidade pontual)
+ q -> Valor de x
+
+### Distribuição Binomial (Variável discreta)
+```{r}
+library(tidyverse)
+p = 1/2
+q = 1 - p
+n = 6
+x = 0:n
+prob = dbinom(x, n, p)
+prob
+tibble(x, prob)
+
+#A) Qual a probabilidade de X ser exatamente 3 vezes 
+dbinom(3,n,p)
+
+#B) Qual a probabilidade de X ser no máximo 3 vezes
+pbinom(3,n,p)
+
+#C) Qual a probabilidade de X ser pelo menos 3 vezes 
+1 - pbinom(2,n,p)
+
+#D) Qual a probabilidade de X ser pelo menos 1 vez
+1 - dbinom(0,n,p)
+
+```
+
+## Distribuição Normal
+```{r}
+li = -1.73
+ls = 0
+curve(dnorm(x),-5,5,lwd=2,col="blue",ylim=c(0,0.4),
+	main="Dist. Normal Padrão") 
+
+polygon(c(li,seq(li,ls,0.001),ls),
+	c(0,dnorm(seq(li,ls,0.001)),0),
+	col = "red", border = "blue",density=20) 
+
+lines(c(li,li),c(0,dnorm(li)),col=2)
+lines(c(ls,ls),c(0,dnorm(ls)),col=2)
+#a) P(-1.73 <ou= z <ou= 0)
+0.5- pnorm(-1.73)
+```
+
+
+
+```{r}
+li = 1.73
+ls = 5
+curve(dnorm(x),-5,5,lwd=2,col="blue",ylim=c(0,0.4),
+	main="Dist. Normal Padrão") 
+polygon(c(li,seq(li,ls,0.001),ls),
+	c(0,dnorm(seq(li,ls,0.001)),0),
+	col = "red", border = "blue",density=20) 
+lines(c(li,li),c(0,dnorm(li)),col=2)
+lines(c(ls,ls),c(0,dnorm(ls)),col=2)
+
+#b) P(Z >= 1,73)
+1-pnorm(1.73)
+```
+
+
+```{r}
+li = -5
+ls = -1.73
+curve(dnorm(x),-5,5,lwd=2,col="blue",ylim=c(0,0.4),
+	main="Dist. Normal Padrão") 
+polygon(c(li,seq(li,ls,0.001),ls),
+	c(0,dnorm(seq(li,ls,0.001)),0),
+	col = "red", border = "blue",density=20) 
+lines(c(li,li),c(0,dnorm(li)),col=2)
+lines(c(ls,ls),c(0,dnorm(ls)),col=2)
+
+#c) P(Z <= -1.73)
+pnorm(-1.73)
+```
+
+
+```{r}
+li = -5
+ls = 1.73
+curve(dnorm(x),-5,5,lwd=2,col="blue",ylim=c(0,0.4),
+	main="Dist. Normal Padrão") 
+polygon(c(li,seq(li,ls,0.001),ls),
+	c(0,dnorm(seq(li,ls,0.001)),0),
+	col = "red", border = "blue",density=20) 
+lines(c(li,li),c(0,dnorm(li)),col=2)
+lines(c(ls,ls),c(0,dnorm(ls)),col=2)
+#d) P(Z <ou= 1,73)
+pnorm(1.73)
+```
+
+
+```{r}
+li = 0.47
+ls = 1.73
+curve(dnorm(x),-5,5,lwd=2,col="blue",ylim=c(0,0.4),
+	main="Dist. Normal Padrão") 
+polygon(c(li,seq(li,ls,0.001),ls),
+	c(0,dnorm(seq(li,ls,0.001)),0),
+	col = "red", border = "blue",density=20) 
+lines(c(li,li),c(0,dnorm(li)),col=2)
+lines(c(ls,ls),c(0,dnorm(ls)),col=2)
+#e) 0.47 <ou= Z <ou 1.73)
+pnorm(1.73)-pnorm(0.47)
+```
+
+### Teste da altura de alunos
+```{r}
+y = c(160, 194, 174, 168, 184, 188, 185)
+mean(y)
+sd(y)
+resultado <- t.test(y, alternative = "g", mu = 176)
+resultado
+```
+
+```{r}
+li = qt(.95,gl)
+ls = 5
+gl = length(y) -1
+curve(dt(x,gl),-5,5,lwd=2,col="blue",ylim=c(0,0.4),
+	main="Dist. t-Student")
+polygon(c(li,seq(li,ls,0.001),ls),
+	c(0,dt(seq(li,ls,0.001),gl),0),
+	col = "red", border = "blue",density=20) 
+abline(v=resultado$statistic,col="blue")
+text(
+  x = resultado$statistic,
+  y = 0.3,
+  labels = "valor t observado",
+  pos = 4
+)
+text(
+  x = li,
+  y = 0.1,
+  labels = expression(paste(alpha,"= 0,05")),
+  pos = 4
+)
+```
+#### Não rejeitamos $H_0$
+
+### Intervalo de confiança para a média com 95% de nivel de confiança (% de significancia)
+
+```{r}
+mean(y) + qt(1-0.025,6)*sd(y)/sqrt(6)
+mean(y) - qt(1-0.025,6)*sd(y)/sqrt(6)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
