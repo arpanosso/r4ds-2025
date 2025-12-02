@@ -1,0 +1,235 @@
+---
+title: "aula10: Teste de Hipóteses"
+author: "Witoria Araujo"
+date: "2025-12-02"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Teste de hipótese é um processo o qual está interessado em fazer
+inferências sobre uma população usando a informação obtida de uma
+amostra.
+
+As conclusões devem sempre estar acompanhadas de uma probabilidade.
+
+## Teste t para uma amostra ("One-sample t-Test").
+
+Para uma amostra, usa-se o teste bilateral.
+
+$$
+\begin{cases}
+H_0: \mu = \mu_0 \\
+H_1: \mu \neq \mu_0
+\end{cases}
+$$ \### Suposições – o teste t para uma amostra assume que:
+
+> a mostra é proveniente de uma população Normalmente distribuída.
+
+O teste pode ser pouco afetado se os dados desviam de uma distribuição
+Normal exceto nos casos em que a distribuição é visivelmente não-Normal.
+Podemos normalizar os dados por uma transformação, geralmente a
+logarítmica, na qual o teste é feito usando os valores transformados.
+
+### Estatística do teste t-Student
+
+$$
+t_{obs} = \frac{\bar{x}-\mu_0}{\frac{s}{\sqrt{n}}} \sim t(n-1)
+$$ $\bar{x}$ é a média observada na amostra;\
+$\mu_0$ é a média declarada em $H_0$;\
+$s$ é o desvio padrão observado na amostra;\
+$n$ é o tamanho da amostra.
+
+**EXERCÍCIO 01)** Os dados abaixo mostram os valores da produção kg por
+hectare de uma cultura agrícola.
+
+```{r}
+x <- c(577, 596, 594, 612, 600, 584, 618, 627, 588, 601, 606, 559,
+       615, 607, 608, 591, 565, 586, 621, 623, 598, 602, 581, 631,
+       570, 595, 603, 605, 616, 574, 578, 600, 596, 619, 636, 589)
+```
+
+É esperado uma média de produção de 607 kg ha-1, com base em indicadores
+de produção. Estes valores são consistentes com a média torno de 607 kg
+ha-1?
+
+### Teste de Normalidade
+
+$$
+\begin{cases}
+H_0: \text{Os dados seguem uma distribuição normal} \\
+H_1: \text{Os dados não seguem uma distribuição normal}
+\end{cases}
+$$ \## Teste t para média de uma população
+
+```{r}
+
+```
+
+## Teste t para duas amostras ("Two-sample t-Test")
+
+Este é talvez o teste mais usado e, talvez o teste mais mal empregado da
+estatística.
+
+Este mal uso do teste ocorre quando não é investigado apropriadamente as
+suposições no qual ele se baseia.
+
+O teste é usado para **comparar as médias de dois grupos independentes**
+de observações usando amostras representativas.
+
+### Suposições:
+
+> 1)  as duas amostras são independentes e representativas da
+>     população(ões) de interesse.
+
+> 2)  a variável de interesse deve **ser aproximadamente Normal** em
+>     cada população de onde elas foram retiradas. Um pequeno desvio da
+>     Normalidade não é crucial e leva somente a uma perda marginal do
+>     poder do teste, ou seja, o teste é robusto contra a violação desta
+>     suposição.
+
+> 3)  em adição, a variabilidades das observações em cada grupo, medida
+>     pelas duas variâncias, devem ser aproximadamente iguais, no jargão
+>     estatístico dizemos homocedásticas.
+
+Esta suposição é importante; podemos examiná-la visualmente, ou mais
+formalmente pelos testes de Levene ("Levene’s test") ou pelo teste F
+("F-test"). ] Se as variâncias não diferem significativamente (e outras
+suposições também são válidas), então podemos prosseguir com o teste.
+
+Se, entretanto, as duas variâncias não são iguais podemos aplicar um
+teste t modificado (veja os exemplos a seguir).
+
+**EXERCÍCIO 2)** Os dados abaixo são altura de plantas (cm), a época de
+colheita de uma de uma cultura. Um tratamento recebeu adubo A e outro
+não C (controle).
+
+```{r}
+adubo <- c(70.7, 71.8, 64.9, 68.2, 69.4, 64.4, 66.9, 69.4,
+67.8, 66.8, 67.0, 67.1, 67.6, 66.1, 62.7, 64.6,       
+69.8, 68.1, 66.0, 69.4, 69.8, 67.9, 66.2, 64.2)
+
+controle <- c(62.5, 66.8, 69.5, 64.1, 65.3, 65.6, 66.4, 66.1, 68.6, 62.5,
+63.9, 65.7, 67.2, 65.2, 63.5, 65.3, 65.1, 64.8, 67.4, 66.0,   
+69.2, 62.6, 61.1, 61.8, 69.6, 71.1, 67.0, 67.5, 68.2, 63.6)
+```
+
+**Para a variância entre duas populações usa-se o teste F**
+
+Suponha duas amostras aleatórias independentes de tamanhos $n_1$ e $n_2$
+ou seja, $X_1 , X_2 , ..., X_{n1}$ e $Y_1 ,Y_2 , ...,Y_{n2}$,
+respectivamente, de uma população com distribuição
+$N(\mu_1, \sigma_1^2)$ e de população com distribuição
+$N(\mu_2, \sigma_2^2)$
+
+### Hipóteses
+
+$$
+H_0: \sigma_1^2 = \sigma_2^2 \implies \left(\frac{\sigma_1^2}{\sigma_2^2} = 1 \right)
+$$
+
+$$
+H_1: \sigma_1^2 > \sigma_2^2 \implies \left(\frac{\sigma_1^2}{\sigma_2^2} > 1 \right)
+$$ \### Estatística do teste:
+
+Sendo $s_1^2$ e $s_2^2$ as variâncias, respectivamente das amostras
+$n_1$ e $n_2$, o quociente
+
+$$
+\frac{s^2_1 / \sigma_1^2}{ s^2_2 / \sigma^2_2}
+$$
+
+Segue a distribuição de $F$ (Snedecor) com $n_1-1$ e $n_2-1$ graus de
+liberdade $(GL)$, tem a denotação
+
+$$
+F(n_1-1, n_2-1)
+$$
+
+Sob a suposição de $H_0$ ser verdadeira, isto é,
+$\sigma^2_1 = \sigma^2_2$, tem-se que
+
+$$
+F = \frac{s^2_1}{s^2_2} \sim F(n_1-1, n_2-1)
+$$
+
+```{r}
+# gráficos box-plot
+
+
+# calculando as cinco medidas resumo dos tratamentos
+
+
+# testando a igualdade das variâncias dos tratamentos pelo teste F
+```
+
+**Para a média de duas amostra, usa-se o teste bilateral.**
+
+$$
+\begin{cases}
+H_0: \mu_A = \mu_C \\
+H_1: \mu_A \neq \mu_C
+\end{cases}
+$$
+
+### Estatística do teste
+
+Preliminarmente, testa-se se as variâncias das duas populações são
+iguais. Caso a hipótese não seja rejeitada, isto é, que
+
+$$
+\sigma_1^2=\sigma_2^2
+$$ , a estatística anterior transforma-se em:
+
+$$Z = \frac{(\bar{X}-\bar{Y})}{\sigma\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}$$
+, substituimos $\sigma$ por um estimador, teremos uma expressão muito
+semelhante à $t$ de Student. Uma estatística para $\sigma^2$ é a média
+ponderada:
+
+$$S_P^2 = \frac{(n_1-1)s_1^2+(n_2-1)s^2_2}{(n_1-1)+(n_2-1)}$$
+
+que, como $s^2_1$ e $s^2_2$ são dois estimadores não viciados de
+$\sigma^2$, também é um estimador não viciado de $\sigma^2$, assim:
+
+$$t = \frac{(\bar{X} - \bar{Y})}{s_p\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}} \sim t(n_1+n_2 - 2)$$
+
+```{r}
+# aplicando o teste t com a opção variâncias (iguais ou diferentes)
+
+```
+
+Quando a hipótese de igualdade de variâncias for rejeitada, deve-se
+substituir $\sigma^2_1$ e $\sigma^2_2$ pelos seus respectivos
+estimadores $s^2_1$ e $s^2_2$ obtendo a estatística:
+
+$$t = \frac{(\bar{X}-\bar{Y})}{\sqrt{\frac{s^2_1}{n_1}+\frac{s^2_2}{n_2}}}$$
+
+que sob a veracidade de $H_0$ $(\mu_1 - \mu_2 = 0)$, aproxima-se de uma
+distribuição $t$ de Student, com número de graus de liberdade dado
+aproximadamente por:
+
+$$gl'=\frac{\frac{s^2_1}{n_1} + \frac{s^2_2}{n_2}}{\frac{\left( \frac{s^2_1}{n_1} \right)^2}{n_1-1}+\frac{\left( \frac{s^2_2}{n_2}  \right)^2}{n_2-1}}$$
+
+Como o número de graus de liberdade assim calculado, geralmente, é **não
+inteiro**, recomenda-se aproximá-lo para o inteiro imediatamente
+anterior a este.
+
+**EXERCÍCIO 3)** Os dados abaixo foram alterado para altura de plantas
+(cm), a época de colheita de uma de uma cultura. Um tratamento recebeu
+adubo A e outro não C (controle). Realizar o teste de comparação de
+médias.
+
+```{r}
+adubo <- c(80.7, 81.8, 64.9, 68.2, 69.4, 64.4, 66.9, 69.4,
+67.8, 66.8, 67.0, 67.1, 67.6, 66.1, 62.7, 64.6,       
+69.8, 68.1, 66.0, 69.4, 69.8, 67.9, 66.2, 64.2)
+
+controle <- c(62.5, 66.8, 69.5, 64.1, 65.3, 65.6, 66.4, 66.1, 68.6, 62.5,
+63.9, 65.7, 67.2, 65.2, 63.5, 65.3, 65.1, 64.8, 67.4, 66.0,   
+69.2, 62.6, 61.1, 61.8, 69.6, 71.1, 67.0, 67.5, 68.2, 63.6)
+```

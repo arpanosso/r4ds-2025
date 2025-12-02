@@ -123,6 +123,10 @@ pnorm(1.73)-pnorm(0.47)
 ```
 
 ### Teste da altura de alunos
+
+H0 - A média da altura dos alunos é 176 cm
+H1 - A média da altura dos alunos é maior que 176 cm
+
 ```{r}
 y = c(160, 194, 174, 168, 184, 188, 185)
 mean(y)
@@ -132,9 +136,9 @@ resultado
 ```
 
 ```{r}
+gl = length(y) -1
 li = qt(.95,gl)
 ls = 5
-gl = length(y) -1
 curve(dt(x,gl),-5,5,lwd=2,col="blue",ylim=c(0,0.4),
 	main="Dist. t-Student")
 polygon(c(li,seq(li,ls,0.001),ls),
@@ -154,6 +158,8 @@ text(
   pos = 4
 )
 ```
+t-observado no amostra não pertence a região crítica, em outras palavras, o p-valor do teste foi maior que 0.05, portanto:
+
 #### Não rejeitamos $H_0$
 
 ### Intervalo de confiança para a média com 95% de nivel de confiança (% de significancia)
